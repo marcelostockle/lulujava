@@ -1,0 +1,8 @@
+{
+	"program": "CSVHeaderTest",
+	"test_settings": {
+		"in_fileA": "Example_data\\otutable_test.txt",
+		"strArgA": "",
+		"strArgB": ""
+	}
+}
