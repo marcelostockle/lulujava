@@ -1,10 +1,10 @@
 package com.lulujava.appmanager;
 
-import com.lulujava.tests.CSVTest;
-import com.lulujava.tests.JSONTest;
+import com.lulujava.lulu.*;
+import com.lulujava.tests.*;
 import java.util.Iterator;
 enum Program {
-    CSVHeaderTest, JSONTest
+    CSVHeaderTest, JSONTest, OTUTableTest
 }
 public class Main {
     static Settings settings;
@@ -14,6 +14,8 @@ public class Main {
             CSVHeaderTest();
         } else if (settings.program == Program.JSONTest) {
             JSONTest();
+        } else if (settings.program == Program.OTUTableTest) {
+            OTUTableTest();
         }
     }
     public static void JSONTest() {
@@ -27,6 +29,10 @@ public class Main {
         Iterator<String> iter = CSVTest.readHeaders(settings.testSettings.in_fileA);
         while (iter.hasNext())
             System.out.println(iter.next());
+    }
+    public static void OTUTableTest() {
+        OTUTable table = new OTUTable(settings.testSettings.in_fileA);
+        System.out.println(table.headers.toString());
     }
     
 }
