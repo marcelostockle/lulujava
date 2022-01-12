@@ -2,7 +2,7 @@ package com.lulujava.lulu;
 
 import java.util.Iterator;
 import org.apache.commons.csv.CSVRecord;
-public class Entry {
+public class Entry implements Comparable<Entry> {
     int[] otu_counts;
     String id;
     int total, spread;
@@ -21,6 +21,21 @@ public class Entry {
             if (otu_counts[i] > 0)
                 spread++;
             i++;
+        }
+    }
+    
+    @Override public int compareTo(Entry e) {
+        if (this.spread < e.spread)
+            return -1;
+        else if (this.spread > e.spread)
+            return 1;
+        else {
+            if (this.total < e.total)
+                return -1;
+            else if (this.total > e.total)
+                return 1;
+            else
+                return 0;
         }
     }
             
