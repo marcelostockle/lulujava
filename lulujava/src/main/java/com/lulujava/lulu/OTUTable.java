@@ -5,15 +5,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.HashMap;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 public class OTUTable {
     public List<String> headers;
-    public List<Entry> entries;
-    public OTUTable(String filepath) {
-        
+    public HashMap<String, Entry> entries;
+    public OTUTable(String filepath, int hashCapacity) {
         CSVFormat csvFormat = CSVFormat.Builder.create()
             .setAllowMissingColumnNames(true)
             .setDelimiter('\t')
@@ -21,12 +20,16 @@ public class OTUTable {
             .setAutoFlush(true)
             .build();
         try {
-            entries = new ArrayList<>();
+            entries = new HashMap<>(hashCapacity);
             Reader in = new FileReader(filepath);
             CSVParser records = csvFormat.parse(in);
             headers = records.getHeaderNames();
-            for (CSVRecord record : records)
-                entries.add(new Entry(record));
+            Entry newEntry;
+            for (CSVRecord record : records) {
+                newEntry = new Entry(record);
+                entries.put(newEntry.id, newEntry);
+            }
+                
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

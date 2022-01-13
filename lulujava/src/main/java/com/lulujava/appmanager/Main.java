@@ -31,7 +31,9 @@ public class Main {
             System.out.println(iter.next());
     }
     public static void OTUTableTest() {
-        OTUTable table = new OTUTable(settings.testSettings.in_fileA);
+        OTUTable table = new OTUTable(
+                settings.testSettings.in_fileA,
+                settings.testSettings.intArgA);
         System.out.println(table.headers.toString());
     }
     
