@@ -3,6 +3,8 @@
 	"test_settings": {
 		"in_fileA": "Example_data\\otutable_test.txt",
 		"strArgA": "",
-		"strArgB": ""
+		"strArgB": "",
+		"intArgA": 0,
+		"intArgB": 0
 	}
 }

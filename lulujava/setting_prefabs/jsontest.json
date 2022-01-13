@@ -3,6 +3,8 @@
 	"test_settings": {
 		"in_fileA": "Example_data\\json_example.json",
 		"strArgA": "settings",
-		"strArgB": "id"
+		"strArgB": "id",
+		"intArgA": 0,
+		"intArgB": 0
 	}
 }
