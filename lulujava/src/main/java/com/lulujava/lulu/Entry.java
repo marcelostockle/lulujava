@@ -25,18 +25,6 @@ public class Entry implements Comparable<Entry> {
     }
     
     @Override public int compareTo(Entry e) {
-        if (this.spread < e.spread)
-            return -1;
-        else if (this.spread > e.spread)
-            return 1;
-        else {
-            if (this.total < e.total)
-                return -1;
-            else if (this.total > e.total)
-                return 1;
-            else
-                return 0;
-        }
-    }
-            
+        return this.spread - e.spread;
+    }  
 }
