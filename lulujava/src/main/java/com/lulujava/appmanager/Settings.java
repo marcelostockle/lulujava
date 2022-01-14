@@ -30,29 +30,3 @@ public class Settings {
         }
     }
 }
-class TestSettings {
-    String in_fileA;
-    String strArgA;
-    String strArgB;
-    int intArgA;
-    int intArgB;
-    public TestSettings(JSONObject root) {
-        in_fileA = root.getString("in_fileA");
-        strArgA = root.getString("strArgA");
-        strArgB = root.getString("strArgB");
-        intArgA = root.getInt("intArgA");
-        intArgB = root.getInt("intArgB");
-    }
-}
-class LULUSettings {
-    String minimum_ratio_type;
-    int minimum_ratio;
-    int minimum_match;
-    double minimum_relative_cooccurence;
-    public LULUSettings(JSONObject root) {
-        minimum_ratio_type = root.getString("minimum_ratio_type");
-        minimum_ratio = root.getInt("minimum_ratio");
-        minimum_match = root.getInt("minimum_match");
-        minimum_relative_cooccurence = root.getDouble("minimum_relative_cooccurence");
-    }
-}
