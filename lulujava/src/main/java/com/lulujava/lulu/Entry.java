@@ -24,6 +24,15 @@ public class Entry implements Comparable<Entry> {
         }
     }
     
+    public double confidence(Entry parent) {
+        int count_and = 0;
+        for (int i = 0; i < this.otu_counts.length; i++) {
+            if (this.otu_counts[i] * parent.otu_counts[i] > 0)
+                count_and++;
+        }
+        return (double) count_and / this.spread;
+    }
+    
     @Override public int compareTo(Entry e) {
         return this.spread - e.spread;
     }  
