@@ -11,7 +11,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 public class OTUTable {
     public List<String> headers;
-    public HashMap<String, Entry> entries;
+    private HashMap<String, Entry> entries;
     public OTUTable(String filepath, int hashCapacity) {
         CSVFormat csvFormat = CSVFormat.Builder.create()
             .setAllowMissingColumnNames(true)
@@ -35,5 +35,8 @@ public class OTUTable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public Entry find(String key) {
+        return entries.get(key);
     }
 }
