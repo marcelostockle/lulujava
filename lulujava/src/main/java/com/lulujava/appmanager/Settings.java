@@ -8,6 +8,7 @@ public class Settings {
     private JSONObject root;
     final String settings_filepath = "settings.json";
     TestSettings testSettings;
+    LULUSettings luluSettings;
     Program program;
     public Settings() {
         String content;
@@ -23,6 +24,7 @@ public class Settings {
         if (root != null) {
             program = root.getEnum(Program.class, "program");
             testSettings = new TestSettings(root.getJSONObject("test_settings"));
+            luluSettings = new LULUSettings(root.getJSONObject("lulu_settings"));
         } else {
             System.err.println("Corrupt settings data at " + settings_filepath);
         }
@@ -40,5 +42,17 @@ class TestSettings {
         strArgB = root.getString("strArgB");
         intArgA = root.getInt("intArgA");
         intArgB = root.getInt("intArgB");
+    }
+}
+class LULUSettings {
+    String minimum_ratio_type;
+    int minimum_ratio;
+    int minimum_match;
+    double minimum_relative_cooccurence;
+    public LULUSettings(JSONObject root) {
+        minimum_ratio_type = root.getString("minimum_ratio_type");
+        minimum_ratio = root.getInt("minimum_ratio");
+        minimum_match = root.getInt("minimum_match");
+        minimum_relative_cooccurence = root.getDouble("minimum_relative_cooccurence");
     }
 }
