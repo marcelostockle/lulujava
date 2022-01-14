@@ -8,6 +8,8 @@
 		"intArgB": 0
 	},
 	"lulu_settings": {
+		"otutable_file": "Example_data\\otutable_test.txt",
+		"matchlist_file": "Example_data\\match_list.txt",
 		"minimum_ratio_type": "min",
 		"minimum_ratio": 1,
 		"minimum_match": 85,
