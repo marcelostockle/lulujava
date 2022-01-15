@@ -24,13 +24,31 @@ public class Entry implements Comparable<Entry> {
         }
     }
     
-    public double confidence(Entry daughter) {
+    public double confidence(Entry parent) {
         int count_and = 0;
         for (int i = 0; i < this.otu_counts.length; i++) {
-            if (this.otu_counts[i] * daughter.otu_counts[i] > 0)
+            if (this.otu_counts[i] * parent.otu_counts[i] > 0)
                 count_and++;
         }
         return (double) count_and / this.spread;
+    }
+    
+    public double mean_relative_abundance(Entry parent) {
+        double accumulate = 0;
+        for (int i = 0; i < this.otu_counts.length; i++) {
+            if (this.otu_counts[i] > 0)
+                accumulate += (double) parent.otu_counts[i] / this.otu_counts[i];
+        }
+        return accumulate / this.spread;
+    }
+    
+    public double min_relative_abundance(Entry parent) {
+        double minimum = -1;
+        for (int i = 0; i < this.otu_counts.length; i++) {
+            if (this.otu_counts[i] > 0)
+                Math.min(minimum, (double) parent.otu_counts[i] / this.otu_counts[i]);
+        }
+        return minimum;
     }
     
     @Override public int compareTo(Entry e) {
