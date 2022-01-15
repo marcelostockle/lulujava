@@ -46,16 +46,24 @@ public class MatchList {
             return false;
         
         Entry daughter = otutable.find(daughter_key);
-        Entry parent = otutable.find(parent_key);
-        double relativeAbundance;
         if (daughter.parent != null)
             return false;
+        
+        Entry parent = otutable.find(parent_key);
+        double relativeAbundance;
         if (daughter.confidence(parent) < settings.minimum_relative_cooccurence)
             return false;
         if (abundanceEstimator == AbundanceEstimator.AVG)
             relativeAbundance = daughter.mean_relative_abundance(parent);
         else
             relativeAbundance = daughter.min_relative_abundance(parent);
+        if (relativeAbundance < settings.minimum_ratio)
+            return false;
+        if (parent.parent == null)
+            daughter.parent = parent;
+        else
+            daughter.parent = parent.parent;
+        otutable.update(daughter_key, daughter);
         return true;
     }
 }
