@@ -39,4 +39,7 @@ public class OTUTable {
     public Entry find(String key) {
         return entries.get(key);
     }
+    public void update(String key, Entry entry) {
+        entries.put(key, entry);
+    }
 }
