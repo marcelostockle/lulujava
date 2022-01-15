@@ -8,10 +8,17 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import com.lulujava.appmanager.LULUSettings;
+enum AbundanceEstimator { AVG, MIN };
 public class MatchList {
     LULUSettings settings;
-    public MatchList(LULUSettings settings) {
+    OTUTable otutable;
+    AbundanceEstimator abundanceEstimator;
+    public MatchList(LULUSettings settings, OTUTable otutable) {
         this.settings = settings;
+        this.otutable = otutable;
+        abundanceEstimator = AbundanceEstimator.AVG;
+        if (settings.minimum_ratio_type.compareToIgnoreCase("min") == 0)
+            abundanceEstimator = AbundanceEstimator.MIN;
         CSVFormat csvFormat = CSVFormat.Builder.create()
             .setDelimiter('\t')
             .setAutoFlush(true)
@@ -28,15 +35,27 @@ public class MatchList {
         }
     }
     private boolean readLine(CSVRecord record) {
-        String parent_key = record.get(0);
-        String daughter_key = record.get(1);
+        String daughter_key = record.get(0);
+        String parent_key = record.get(1);
         double match_coef = Double.valueOf(record.get(2));
-        if (parent_key.compareTo(daughter_key) == 0)
+        if (daughter_key.compareTo(parent_key) == 0)
             return false;
-        if (daughter_key.compareTo("*") == 0)
+        if (parent_key.compareTo("*") == 0)
             return false;
         if (match_coef < settings.minimum_match)
             return false;
+        
+        Entry daughter = otutable.find(daughter_key);
+        Entry parent = otutable.find(parent_key);
+        double relativeAbundance;
+        if (daughter.parent != null)
+            return false;
+        if (daughter.confidence(parent) < settings.minimum_relative_cooccurence)
+            return false;
+        if (abundanceEstimator == AbundanceEstimator.AVG)
+            relativeAbundance = daughter.mean_relative_abundance(parent);
+        else
+            relativeAbundance = daughter.min_relative_abundance(parent);
         return true;
     }
 }
