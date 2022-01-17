@@ -43,10 +43,10 @@ public class Entry implements Comparable<Entry> {
     }
     
     public double min_relative_abundance(Entry parent) {
-        double minimum = -1;
+        double minimum = 1e12;
         for (int i = 0; i < this.otu_counts.length; i++) {
             if (this.otu_counts[i] > 0)
-                Math.min(minimum, (double) parent.otu_counts[i] / this.otu_counts[i]);
+                minimum = Math.min(minimum, (double) parent.otu_counts[i] / this.otu_counts[i]);
         }
         return minimum;
     }
