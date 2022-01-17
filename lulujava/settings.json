@@ -12,7 +12,7 @@
 		"matchlist_file": "Example_data\\match_list.txt",
 		"minimum_ratio_type": "min",
 		"minimum_ratio": 1,
-		"minimum_match": 85,
+		"minimum_match": 97,
 		"minimum_relative_cooccurrence": 0.95
 	}
 }
