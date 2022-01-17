@@ -14,6 +14,6 @@ public class LULUSettings {
         minimum_ratio_type = root.getString("minimum_ratio_type");
         minimum_ratio = root.getDouble("minimum_ratio");
         minimum_match = root.getInt("minimum_match");
-        minimum_relative_cooccurence = root.getDouble("minimum_relative_cooccurence");
+        minimum_relative_cooccurence = root.getDouble("minimum_relative_cooccurrence");
     }
 }
