@@ -42,7 +42,7 @@ public class MatchList {
             return false;
         if (parent_key.compareTo("*") == 0)
             return false;
-        if (match_coef < settings.minimum_match)
+        if (match_coef <= settings.minimum_match)
             return false;
         
         Entry daughter = otutable.find(daughter_key);
@@ -57,13 +57,14 @@ public class MatchList {
             relativeAbundance = daughter.mean_relative_abundance(parent);
         else
             relativeAbundance = daughter.min_relative_abundance(parent);
-        if (relativeAbundance < settings.minimum_ratio)
+        if (relativeAbundance <= settings.minimum_ratio)
             return false;
         if (parent.parent == null)
             daughter.parent = parent;
         else
             daughter.parent = parent.parent;
         otutable.update(daughter_key, daughter);
+        System.out.println(daughter_key + "," + daughter.parent.id);
         return true;
     }
 }
