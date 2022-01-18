@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
 import java.util.HashMap;
+import java.util.Iterator;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -41,5 +42,8 @@ public class OTUTable {
     }
     public void update(String key, Entry entry) {
         entries.put(key, entry);
+    }
+    public Iterator<Entry> getIterator() {
+        return entries.values().iterator();
     }
 }

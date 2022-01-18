@@ -8,6 +8,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import com.lulujava.appmanager.LULUSettings;
+import java.util.Iterator;
 enum AbundanceEstimator { AVG, MIN };
 public class MatchList {
     LULUSettings settings;
@@ -28,6 +29,7 @@ public class MatchList {
             CSVParser records = csvFormat.parse(in);
             for (CSVRecord record : records)
                 readLine(record);
+            parseResults();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -66,5 +68,20 @@ public class MatchList {
         otutable.update(daughter_key, daughter);
         System.out.println(daughter_key + "," + daughter.parent.id);
         return true;
+    }
+    private void parseResults() {
+        Iterator<Entry> iter = this.otutable.getIterator();
+        int curated_count = 0;
+        int discarded_count = 0;
+        Entry next;
+        while (iter.hasNext()) {
+            next = iter.next();
+            if (next.parent == null)
+                curated_count++;
+            else
+                discarded_count++;
+        }
+        System.out.println("curated_count = " + curated_count);
+        System.out.println("discarded_count = " + discarded_count);
     }
 }

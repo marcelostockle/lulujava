@@ -51,6 +51,12 @@ public class Entry implements Comparable<Entry> {
         return minimum;
     }
     
+    public String getParentID() {
+        if (this.parent == null)
+            return this.id;
+        return parent.id;
+    }
+    
     @Override public int compareTo(Entry e) {
         return this.spread - e.spread;
     }  
