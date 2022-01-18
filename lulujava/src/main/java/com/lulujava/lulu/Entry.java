@@ -7,19 +7,21 @@ public class Entry implements Comparable<Entry> {
     String id;
     int total, spread;
     Entry parent;
+    CSVRecord record;
     public Entry(CSVRecord line) {
-        parent = null;
-        total = 0;
-        spread = 0;
+        this.record = line;
+        this.parent = null;
+        this.total = 0;
+        this.spread = 0;
         Iterator<String> iter = line.iterator();
-        id = iter.next();
-        otu_counts = new int[line.size() - 1];
+        this.id = iter.next();
+        this.otu_counts = new int[line.size() - 1];
         int i = 0;
         while (iter.hasNext()) {
-            otu_counts[i] = Integer.valueOf(iter.next());
-            total += otu_counts[i];
-            if (otu_counts[i] > 0)
-                spread++;
+            this.otu_counts[i] = Integer.valueOf(iter.next());
+            this.total += this.otu_counts[i];
+            if (this.otu_counts[i] > 0)
+                this.spread++;
             i++;
         }
     }
