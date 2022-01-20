@@ -30,7 +30,6 @@ public class OTUTable {
                 newEntry = new Entry(record);
                 entries.put(newEntry.id, newEntry);
             }
-                
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -48,5 +47,8 @@ public class OTUTable {
     }
     public java.util.Collection<Entry> values() {
         return entries.values();
+    }
+    public int size() {
+        return entries.size();
     }
 }

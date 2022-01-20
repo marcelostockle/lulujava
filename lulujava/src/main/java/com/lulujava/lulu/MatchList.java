@@ -17,6 +17,7 @@ public class MatchList {
     LULUSettings settings;
     OTUTable otutable;
     AbundanceEstimator abundanceEstimator;
+    private long initmillis;
     final CSVFormat csvFormat = CSVFormat.Builder.create()
         .setDelimiter('\t')
         .setAutoFlush(true)
@@ -27,12 +28,28 @@ public class MatchList {
         abundanceEstimator = AbundanceEstimator.AVG;
         if (settings.minimum_ratio_type.compareToIgnoreCase("min") == 0)
             abundanceEstimator = AbundanceEstimator.MIN;
+    }
+    public void run() {
         try {
+            this.initmillis = System.currentTimeMillis();
+            System.out.println("Starting parent-daughter matching...");
             Reader in = new FileReader(settings.matchlist_file);
             CSVParser records = csvFormat.parse(in);
-            for (CSVRecord record : records)
+            long progress = 0;
+            long milestone = 10000;
+            for (CSVRecord record : records) {
                 readLine(record);
+                progress++;
+                if (progress >= milestone) {
+                    System.out.printf("[%d ms] Progress: %d records / ???%n", 
+                            System.currentTimeMillis() - initmillis, milestone);
+                    milestone += 10000;
+                }
+            }
+            System.out.println("Parent-daughter match complete.");
+            System.out.println("Ranking OTU map.");
             findRank();
+            System.out.println("Saving results...");
             parseResults();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
