@@ -32,6 +32,7 @@ public class MatchList {
             CSVParser records = csvFormat.parse(in);
             for (CSVRecord record : records)
                 readLine(record);
+            findRank();
             parseResults();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -106,7 +107,7 @@ public class MatchList {
                 discarded_count++;
                 adding.add("merged");
             }
-            adding.add("NaN");
+            adding.add(String.valueOf(next.rank));
             printerOTUMap.printRecord(adding);
             adding.clear();
         }
@@ -114,5 +115,16 @@ public class MatchList {
         printerCuratedTable.close(true);
         System.out.println("curated_count = " + curated_count);
         System.out.println("discarded_count = " + discarded_count);
+    }
+    
+    private void findRank() {
+        ArrayList<Entry> sortedList = new ArrayList<>(otutable.values());
+        sortedList.sort(java.util.Collections.reverseOrder());
+        int rank = 1;
+        for (Entry e: sortedList) {
+            e.rank = rank;
+            this.otutable.update(e.id, e);
+            rank++;
+        }
     }
 }

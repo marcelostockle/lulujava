@@ -5,7 +5,7 @@ import org.apache.commons.csv.CSVRecord;
 public class Entry implements Comparable<Entry> {
     int[] otu_counts;
     String id;
-    int total, spread;
+    int total, spread, rank;
     Entry parent;
     CSVRecord record;
     public Entry(CSVRecord line) {
@@ -60,6 +60,6 @@ public class Entry implements Comparable<Entry> {
     }
     
     @Override public int compareTo(Entry e) {
-        return this.spread - e.spread;
+        return this.total - e.total;
     }  
 }

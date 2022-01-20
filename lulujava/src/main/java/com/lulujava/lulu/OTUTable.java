@@ -46,4 +46,7 @@ public class OTUTable {
     public Iterator<Entry> getIterator() {
         return entries.values().iterator();
     }
+    public java.util.Collection<Entry> values() {
+        return entries.values();
+    }
 }
