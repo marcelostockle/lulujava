@@ -1,5 +1,14 @@
 package com.lulujava.lulu;
 
+/**
+* OTUTable.java is responsible for reading, parsing and indexing the provided
+* OTU Table type input file. Indexation relies on a HashMap structure for 
+* efficient insertion and search. The provided constructor takes care of all
+* the tasks outlined above.
+*
+* @author  Marcelo Stöckle
+* @since   2022-01-24 
+*/
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;

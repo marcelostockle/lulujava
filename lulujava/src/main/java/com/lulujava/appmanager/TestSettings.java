@@ -1,5 +1,13 @@
 package com.lulujava.appmanager;
 
+/**
+* LULUSettings.java details a structure listing all the parameters found
+* in settings.java under the label "test_settings". The provided constructor
+* will automatically unpack the JSONObject with the label "test_settings".
+*
+* @author  Marcelo Stöckle
+* @since   2022-01-24 
+*/
 import org.json.JSONObject;
 public class TestSettings {
     String in_fileA;

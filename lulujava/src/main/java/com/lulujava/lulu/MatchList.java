@@ -1,5 +1,17 @@
 package com.lulujava.lulu;
 
+/**
+* MatchList.java is responsible for reading and parsing the provided Match List
+* type input file. Since most crucial tasks in the LULU algorithm happen during
+* the scanning of a Match List type input file, the functions detailed in 
+* this class encompasses the bulk of the runtime.
+* 
+* The provided constructor does NOT take care of the tasks outlined above. To
+* start the program, use MatchList.run().
+*
+* @author  Marcelo Stöckle
+* @since   2022-01-24 
+*/
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;

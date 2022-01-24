@@ -1,5 +1,16 @@
 package com.lulujava.lulu;
 
+/**
+* Entry.java consists of a structure detailing a single entry found in an 
+* OTU table type input file. The provided constructor unpacks a single entry
+* with the use of the Commons CSV library appended to this project.
+* 
+* Entry-specific parameters "total" and "spread" are calculated on construction,
+* while "rank" is calculated independently by OTUTable.java.
+*
+* @author  Marcelo Stöckle
+* @since   2022-01-24 
+*/
 import java.util.Iterator;
 import org.apache.commons.csv.CSVRecord;
 public class Entry implements Comparable<Entry> {

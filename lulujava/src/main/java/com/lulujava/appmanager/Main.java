@@ -1,5 +1,11 @@
 package com.lulujava.appmanager;
 
+/**
+* Main.java centralizes all the programs embedded in this package.
+*
+* @author  Marcelo Stöckle
+* @since   2022-01-24 
+*/
 import com.lulujava.lulu.*;
 import com.lulujava.tests.*;
 import java.util.Iterator;

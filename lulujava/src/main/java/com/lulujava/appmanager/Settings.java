@@ -1,5 +1,14 @@
 package com.lulujava.appmanager;
 
+/**
+* Settings.java is in charge of parsing and unpacking the settings file
+* at settings.java. The constructor provided takes care of the task initializing
+* the pertinent fields: "testSettings", "luluSettings" and "program".
+*
+* @author  Marcelo Stöckle
+* @since   2022-01-24 
+*/
+
 import org.json.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
