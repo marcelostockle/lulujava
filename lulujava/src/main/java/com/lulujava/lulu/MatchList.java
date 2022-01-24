@@ -47,8 +47,6 @@ public class MatchList {
                 }
             }
             System.out.println("Parent-daughter match complete.");
-            System.out.println("Ranking OTU map.");
-            findRank();
             System.out.println("Saving results...");
             parseResults();
         } catch (FileNotFoundException e) {
@@ -132,16 +130,5 @@ public class MatchList {
         printerCuratedTable.close(true);
         System.out.println("curated_count = " + curated_count);
         System.out.println("discarded_count = " + discarded_count);
-    }
-    
-    private void findRank() {
-        ArrayList<Entry> sortedList = new ArrayList<>(otutable.values());
-        sortedList.sort(java.util.Collections.reverseOrder());
-        int rank = 1;
-        for (Entry e: sortedList) {
-            e.rank = rank;
-            this.otutable.update(e.id, e);
-            rank++;
-        }
     }
 }

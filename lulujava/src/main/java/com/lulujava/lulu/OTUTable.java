@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,10 +31,21 @@ public class OTUTable {
                 newEntry = new Entry(record);
                 entries.put(newEntry.id, newEntry);
             }
+            findRank();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    private void findRank() {
+        ArrayList<Entry> sortedList = new ArrayList<>(entries.values());
+        sortedList.sort(java.util.Collections.reverseOrder());
+        int rank = 1;
+        for (Entry e: sortedList) {
+            e.rank = rank;
+            update(e.id, e);
+            rank++;
         }
     }
     public Entry find(String key) {
@@ -44,9 +56,6 @@ public class OTUTable {
     }
     public Iterator<Entry> getIterator() {
         return entries.values().iterator();
-    }
-    public java.util.Collection<Entry> values() {
-        return entries.values();
     }
     public int size() {
         return entries.size();
