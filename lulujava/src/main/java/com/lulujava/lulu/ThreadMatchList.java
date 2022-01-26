@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Future;
 import org.apache.commons.csv.CSVPrinter;
@@ -33,7 +34,8 @@ public class ThreadMatchList {
     OTUTable otutable;
     AbundanceEstimator abundanceEstimator;
     private long initmillis;
-    ExecutorCompletionService service;
+    ExecutorCompletionService completionService;
+    ExecutorService service;
     final CSVFormat csvFormat = CSVFormat.Builder.create()
         .setDelimiter('\t')
         .setAutoFlush(true)
@@ -47,7 +49,8 @@ public class ThreadMatchList {
         abundanceEstimator = AbundanceEstimator.AVG;
         if (settings.minimum_ratio_type.compareToIgnoreCase("min") == 0)
             abundanceEstimator = AbundanceEstimator.MIN;
-        service = new ExecutorCompletionService<Entry>(Executors.newFixedThreadPool(maxThreads));
+        service = Executors.newFixedThreadPool(maxThreads);
+        completionService = new ExecutorCompletionService<Entry>(service);
     }
     public void run() {
         try {
@@ -58,10 +61,10 @@ public class ThreadMatchList {
             long progress = 0;
             long milestone = 10000;
             for (CSVRecord record : records) {
-                service.submit(new MatchListReadTask(this, record));
+                completionService.submit(new MatchListReadTask(this, record));
                 Future<Entry> poll;
                 Entry pollGet;
-                while ((poll = service.poll()) != null) {
+                while ((poll = completionService.poll()) != null) {
                     if ((pollGet = poll.get()) != null)
                         otutable.update(pollGet.id, pollGet);
                     progress++;
@@ -84,6 +87,7 @@ public class ThreadMatchList {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        service.shutdownNow();
     }
     private void parseResults() throws IOException {      
         CSVFormat otuMapFormat = CSVFormat.Builder.create()
