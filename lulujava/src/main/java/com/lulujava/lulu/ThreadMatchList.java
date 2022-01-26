@@ -65,8 +65,8 @@ public class ThreadMatchList {
                 while ((poll = service.poll()) != null) {
                     pollGet = poll.get();
                     otutable.update(pollGet.id, pollGet);
+                    progress++;
                 }
-                progress++;
                 if (progress >= milestone) {
                     System.out.printf("[%d ms] Progress: %d records / ???%n", 
                             System.currentTimeMillis() - initmillis, milestone);

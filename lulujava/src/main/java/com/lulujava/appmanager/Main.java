@@ -31,8 +31,13 @@ public class Main {
             settings.luluSettings.otutable_file,
             10000000);
         System.out.println("OTU table ready. Total entries: " + table.size());
-        MatchList matchlist = new MatchList(settings.luluSettings, table);
-        matchlist.run();
+        if (settings.luluSettings.threads == 1) {
+            MatchList matchlist = new MatchList(settings.luluSettings, table);
+            matchlist.run();
+        } else {
+            ThreadMatchList matchlist = new ThreadMatchList(settings.luluSettings, table);
+            matchlist.run();
+        }
         System.out.println("DONE");
     }
     public static void JSONTest() {
