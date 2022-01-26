@@ -62,8 +62,8 @@ public class ThreadMatchList {
                 Future<Entry> poll;
                 Entry pollGet;
                 while ((poll = service.poll()) != null) {
-                    pollGet = poll.get();
-                    otutable.update(pollGet.id, pollGet);
+                    if ((pollGet = poll.get()) != null)
+                        otutable.update(pollGet.id, pollGet);
                     progress++;
                 }
                 if (progress >= milestone) {
