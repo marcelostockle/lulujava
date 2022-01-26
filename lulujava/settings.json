@@ -8,13 +8,14 @@
 		"intArgB": 0
 	},
 	"lulu_settings": {
-		"otutable_file": "Example_data\\otutable_test.txt",
-		"matchlist_file": "Example_data\\match_list.txt",
+		"otutable_file": "Big_data\\otutable_test.txt",
+		"matchlist_file": "Big_data\\match_list.txt",
         "out_otu_map": "out_otu_map.csv",
         "out_curated_table": "out_curated_table.csv",
 		"minimum_ratio_type": "min",
 		"minimum_ratio": 1,
 		"minimum_match": 97,
-		"minimum_relative_cooccurrence": 0.95
+		"minimum_relative_cooccurrence": 0.95,
+		"threads": 1
 	}
 }

@@ -18,6 +18,7 @@ public class LULUSettings {
     public double minimum_ratio;
     public int minimum_match;
     public double minimum_relative_cooccurence;
+    public int threads;
     public LULUSettings(JSONObject root) {
         otutable_file = root.getString("otutable_file");
         matchlist_file = root.getString("matchlist_file");
@@ -27,5 +28,6 @@ public class LULUSettings {
         minimum_ratio = root.getDouble("minimum_ratio");
         minimum_match = root.getInt("minimum_match");
         minimum_relative_cooccurence = root.getDouble("minimum_relative_cooccurrence");
+        threads = root.getInt("threads");
     }
 }

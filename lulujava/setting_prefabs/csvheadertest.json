@@ -15,6 +15,7 @@
 		"minimum_ratio_type": "min",
 		"minimum_ratio": 1,
 		"minimum_match": 97,
-		"minimum_relative_cooccurrence": 0.95
+		"minimum_relative_cooccurrence": 0.95,
+		"threads": 1
 	}
 }
