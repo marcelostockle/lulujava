@@ -24,7 +24,6 @@ import com.lulujava.appmanager.LULUSettings;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.apache.commons.csv.CSVPrinter;
-enum AbundanceEstimator { AVG, MIN };
 public class MatchList {
     LULUSettings settings;
     OTUTable otutable;

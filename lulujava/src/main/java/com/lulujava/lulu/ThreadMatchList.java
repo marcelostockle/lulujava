@@ -28,7 +28,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Future;
 import org.apache.commons.csv.CSVPrinter;
-enum AbundanceEstimator { AVG, MIN };
 public class ThreadMatchList {
     LULUSettings settings;
     OTUTable otutable;
