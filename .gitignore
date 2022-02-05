@@ -3,5 +3,4 @@
 /lulujava/target/
 lulujava/Example_data/README.md
 lulujava/pseudocodigo.txt
-lulujava/out_curated_table.csv
-lulujava/out_otu_map.csv
+*.csv
