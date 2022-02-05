@@ -12,6 +12,7 @@
 		"matchlist_file": "Example_data\\match_list.txt",
         "out_otu_map": "out_otu_map.csv",
         "out_curated_table": "out_curated_table.csv",
+		"out_discarded_table": "out_discarded_table.csv",
 		"minimum_ratio_type": "min",
 		"minimum_ratio": 1,
 		"minimum_match": 97,

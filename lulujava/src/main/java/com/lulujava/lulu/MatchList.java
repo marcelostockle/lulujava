@@ -112,8 +112,11 @@ public class MatchList {
                 new FileWriter(settings.out_otu_map));
         CSVPrinter printerCuratedTable = curatedTableFormat.print(
                 new FileWriter(settings.out_curated_table));
+        CSVPrinter printerDiscardedTable = curatedTableFormat.print(
+                new FileWriter(settings.out_discarded_table));
         ArrayList<String> adding = new ArrayList<>(otutable.headers);
         printerCuratedTable.printRecord(adding);
+        printerDiscardedTable.printRecord(adding);
         adding.clear();
         Iterator<Entry> iter = this.otutable.getIterator();
         int curated_count = 0;
@@ -132,6 +135,7 @@ public class MatchList {
             } else {
                 discarded_count++;
                 adding.add("merged");
+                printerDiscardedTable.printRecord(next.record);
             }
             adding.add(String.valueOf(next.rank));
             printerOTUMap.printRecord(adding);
@@ -139,6 +143,7 @@ public class MatchList {
         }
         printerOTUMap.close(true);
         printerCuratedTable.close(true);
+        printerDiscardedTable.close(true);
         System.out.println("curated_count = " + curated_count);
         System.out.println("discarded_count = " + discarded_count);
     }
