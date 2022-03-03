@@ -64,6 +64,11 @@ public class Entry implements Comparable<Entry> {
         return minimum;
     }
     
+    public void addOTUs(Entry daughter) {
+        for (int i = 0; i < otu_counts.length; i++)
+            this.otu_counts[i] += daughter.otu_counts[i];
+    }
+    
     public String getParentID() {
         if (this.parent == null)
             return this.id;

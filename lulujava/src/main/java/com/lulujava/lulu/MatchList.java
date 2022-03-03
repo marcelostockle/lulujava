@@ -22,6 +22,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import com.lulujava.appmanager.LULUSettings;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import org.apache.commons.csv.CSVPrinter;
 public class MatchList {
@@ -47,14 +48,14 @@ public class MatchList {
             Reader in = new FileReader(settings.matchlist_file);
             CSVParser records = csvFormat.parse(in);
             long progress = 0;
-            long milestone = 10000;
+            long milestone = 100000;
             for (CSVRecord record : records) {
                 readLine(record);
                 progress++;
                 if (progress >= milestone) {
                     System.out.printf("[%d ms] Progress: %d records / ???%n", 
                             System.currentTimeMillis() - initmillis, milestone);
-                    milestone += 10000;
+                    milestone += 100000;
                 }
             }
             System.out.println("Parent-daughter match complete.");
@@ -91,11 +92,13 @@ public class MatchList {
             relativeAbundance = daughter.min_relative_abundance(parent);
         if (relativeAbundance <= settings.minimum_ratio)
             return false;
-        if (parent.parent == null)
-            daughter.parent = parent;
-        else
-            daughter.parent = parent.parent;
+        if (parent.parent != null)
+            parent = parent.parent;
+        daughter.parent = parent;
+        parent_key = parent.id;
+        parent.addOTUs(daughter);
         otutable.update(daughter_key, daughter);
+        otutable.update(parent_key, parent);
         return true;
     }
     private void parseResults() throws IOException {      
@@ -122,8 +125,12 @@ public class MatchList {
         int curated_count = 0;
         int discarded_count = 0;
         Entry next;
+        ArrayList<String> otu_counts = new ArrayList<>();
         while (iter.hasNext()) {
             next = iter.next();
+            otu_counts.add(next.id);
+            for (int i = 0; i < next.otu_counts.length; i++)
+                otu_counts.add(Integer.toString(next.otu_counts[i]));
             adding.add(next.id);
             adding.add(String.valueOf(next.total));
             adding.add(String.valueOf(next.spread));
@@ -131,15 +138,16 @@ public class MatchList {
             if (next.parent == null) {
                 curated_count++;
                 adding.add("parent");
-                printerCuratedTable.printRecord(next.record);
+                printerCuratedTable.printRecord(otu_counts);
             } else {
                 discarded_count++;
                 adding.add("merged");
-                printerDiscardedTable.printRecord(next.record);
+                printerDiscardedTable.printRecord(otu_counts);
             }
             adding.add(String.valueOf(next.rank));
             printerOTUMap.printRecord(adding);
             adding.clear();
+            otu_counts.clear();
         }
         printerOTUMap.close(true);
         printerCuratedTable.close(true);
