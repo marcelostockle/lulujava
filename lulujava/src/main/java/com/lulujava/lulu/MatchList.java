@@ -79,10 +79,10 @@ public class MatchList {
             return false;
         
         Entry daughter = otutable.find(daughter_key);
-        if (daughter.parent != null)
+        Entry parent = otutable.find(parent_key);
+        if (daughter.parent != null && daughter.parent.rank <= parent.rank)
             return false;
         
-        Entry parent = otutable.find(parent_key);
         double relativeAbundance;
         if (daughter.confidence(parent) < settings.minimum_relative_cooccurence)
             return false;
@@ -94,6 +94,8 @@ public class MatchList {
             return false;
         if (parent.parent != null)
             parent = parent.parent;
+        if (daughter.parent != null)
+            daughter.parent.undoAddOTUs(daughter);
         daughter.parent = parent;
         parent_key = parent.id;
         parent.addOTUs(daughter);

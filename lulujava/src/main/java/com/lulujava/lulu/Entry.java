@@ -69,6 +69,11 @@ public class Entry implements Comparable<Entry> {
             this.otu_counts[i] += daughter.otu_counts[i];
     }
     
+    public void undoAddOTUs(Entry daughter) {
+        for (int i = 0; i < otu_counts.length; i++)
+            this.otu_counts[i] -= daughter.otu_counts[i];
+    }
+    
     public String getParentID() {
         if (this.parent == null)
             return this.id;
@@ -76,6 +81,8 @@ public class Entry implements Comparable<Entry> {
     }
     
     @Override public int compareTo(Entry e) {
-        return this.total - e.total;
+        if (this.spread == e.spread)
+            return this.total - e.total;
+        return this.spread - e.spread;
     }  
 }
