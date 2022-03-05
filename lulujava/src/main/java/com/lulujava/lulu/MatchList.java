@@ -94,8 +94,10 @@ public class MatchList {
             return false;
         if (parent.parent != null)
             parent = parent.parent;
-        if (daughter.parent != null)
+        if (daughter.parent != null) {
             daughter.parent.undoAddOTUs(daughter);
+            otutable.update(daughter.parent.id, daughter.parent);
+        }
         daughter.parent = parent;
         parent_key = parent.id;
         parent.addOTUs(daughter);
@@ -130,6 +132,7 @@ public class MatchList {
         ArrayList<String> otu_counts = new ArrayList<>();
         while (iter.hasNext()) {
             next = iter.next();
+            next.applyAddedOTUs();
             otu_counts.add(next.id);
             for (int i = 0; i < next.otu_counts.length; i++)
                 otu_counts.add(Integer.toString(next.otu_counts[i]));

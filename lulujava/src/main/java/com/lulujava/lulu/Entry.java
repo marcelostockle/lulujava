@@ -14,7 +14,7 @@ package com.lulujava.lulu;
 import java.util.Iterator;
 import org.apache.commons.csv.CSVRecord;
 public class Entry implements Comparable<Entry> {
-    int[] otu_counts;
+    int[] otu_counts, otu_inherit;
     String id;
     int total, spread, rank;
     Entry parent;
@@ -27,6 +27,7 @@ public class Entry implements Comparable<Entry> {
         Iterator<String> iter = line.iterator();
         this.id = iter.next();
         this.otu_counts = new int[line.size() - 1];
+        this.otu_inherit = new int[line.size() - 1];
         int i = 0;
         while (iter.hasNext()) {
             this.otu_counts[i] = Integer.valueOf(iter.next());
@@ -65,13 +66,20 @@ public class Entry implements Comparable<Entry> {
     }
     
     public void addOTUs(Entry daughter) {
-        for (int i = 0; i < otu_counts.length; i++)
-            this.otu_counts[i] += daughter.otu_counts[i];
+        for (int i = 0; i < otu_counts.length; i++) {
+            this.otu_inherit[i] += daughter.otu_counts[i];
+            this.otu_inherit[i] += daughter.otu_inherit[i];
+        }
     }
     
     public void undoAddOTUs(Entry daughter) {
         for (int i = 0; i < otu_counts.length; i++)
-            this.otu_counts[i] -= daughter.otu_counts[i];
+            this.otu_inherit[i] -= daughter.otu_counts[i];
+    }
+    
+    public void applyAddedOTUs() {
+        for (int i = 0; i < otu_counts.length; i++)
+            this.otu_counts[i] += this.otu_inherit[i];
     }
     
     public String getParentID() {
