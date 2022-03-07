@@ -58,21 +58,6 @@ public class MatchList {
                     milestone += 100000;
                 }
             }
-            progress = 0; milestone = 100000;
-            in.close();
-            System.out.println("Parent-daughter 1st round complete.");
-            System.out.println("Parent-daughter second verification in progress...");
-            in = new FileReader(settings.matchlist_file);
-            records = csvFormat.parse(in);
-            for (CSVRecord record : records) {
-                validateLine(record);
-                progress++;
-                if (progress >= milestone) {
-                    System.out.printf("[%d ms] Progress: %d records / ???%n", 
-                            System.currentTimeMillis() - initmillis, milestone);
-                    milestone += 100000;
-                }
-            }
             System.out.println("Parent-daughter match complete.");
             System.out.println("Saving results...");
             parseResults();
@@ -98,47 +83,27 @@ public class MatchList {
         if (daughter.parent != null && daughter.parent.rank <= parent.rank)
             return false;
         
-        if (tryRelativeAbundance(daughter, parent) 
-                && tryRelativeCoocurrence(daughter, parent)) {
-            if (daughter.parent != null) {
-                daughter.parent.undoAddOTUs(daughter);
-                otutable.update(daughter.parent.id, daughter.parent);
-            }
-            daughter.parent = parent;
-            parent.addOTUs(daughter);
-            otutable.update(daughter_key, daughter);
-            otutable.update(parent_key, parent);
-            return true;
-        }
-        return false;
-    }
-    private boolean validateLine(CSVRecord record) {
-        String daughter_key = record.get(0);
-        String parent_key = record.get(1);
-        double match_coef = Double.valueOf(record.get(2));
-        if (daughter_key.compareTo(parent_key) == 0)
+        double relativeAbundance;
+        if (daughter.confidence(parent) < settings.minimum_relative_cooccurence)
             return false;
-        if (parent_key.compareTo("*") == 0)
+        if (abundanceEstimator == AbundanceEstimator.AVG)
+            relativeAbundance = daughter.mean_relative_abundance(parent);
+        else
+            relativeAbundance = daughter.min_relative_abundance(parent);
+        if (relativeAbundance <= settings.minimum_ratio)
             return false;
-        if (match_coef <= settings.minimum_match)
-            return false;
-        Entry daughter = otutable.find(daughter_key);
-        Entry parent = otutable.find(parent_key);
-        if (daughter.parent == null)
-            return false;
-        if ((daughter.parent.parent != null || daughter.parent.rank > parent.rank)
-                && parent.parent == null 
-                && tryRelativeAbundance(daughter, parent)
-                && tryRelativeCoocurrence(daughter, parent)) {
+        if (parent.parent != null)
+            parent = parent.parent;
+        if (daughter.parent != null) {
             daughter.parent.undoAddOTUs(daughter);
             otutable.update(daughter.parent.id, daughter.parent);
-            daughter.parent = parent;
-            parent.addOTUs(daughter);
-            otutable.update(daughter_key, daughter);
-            otutable.update(parent_key, parent);
-            return true;
         }
-        return false;
+        daughter.parent = parent;
+        parent_key = parent.id;
+        parent.addOTUs(daughter);
+        otutable.update(daughter_key, daughter);
+        otutable.update(parent_key, parent);
+        return true;
     }
     private void parseResults() throws IOException {      
         CSVFormat otuMapFormat = CSVFormat.Builder.create()
@@ -194,16 +159,5 @@ public class MatchList {
         printerDiscardedTable.close(true);
         System.out.println("curated_count = " + curated_count);
         System.out.println("discarded_count = " + discarded_count);
-    }
-    private boolean tryRelativeAbundance(Entry daughter, Entry parent) {
-        double relativeAbundance;
-        if (abundanceEstimator == AbundanceEstimator.AVG)
-            relativeAbundance = daughter.mean_relative_abundance(parent);
-        else
-            relativeAbundance = daughter.min_relative_abundance(parent);
-        return relativeAbundance > settings.minimum_ratio;
-    }
-    private boolean tryRelativeCoocurrence(Entry daughter, Entry parent) {
-        return daughter.confidence(parent) >= settings.minimum_relative_cooccurence;
     }
 }

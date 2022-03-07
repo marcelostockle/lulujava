@@ -68,13 +68,13 @@ public class Entry implements Comparable<Entry> {
     public void addOTUs(Entry daughter) {
         for (int i = 0; i < otu_counts.length; i++) {
             this.otu_inherit[i] += daughter.otu_counts[i];
+            this.otu_inherit[i] += daughter.otu_inherit[i];
         }
     }
     
     public void undoAddOTUs(Entry daughter) {
-        for (int i = 0; i < otu_counts.length; i++) {
+        for (int i = 0; i < otu_counts.length; i++)
             this.otu_inherit[i] -= daughter.otu_counts[i];
-        }
     }
     
     public void applyAddedOTUs() {
